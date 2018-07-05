@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestNewRegionOK(t *testing.T) {
+func TestNewLocationOK(t *testing.T) {
 	inputTaxes := []Tax{
 		{
 			Name:   "VAT",
@@ -13,13 +13,13 @@ func TestNewRegionOK(t *testing.T) {
 		},
 	}
 
-	want := Region{
-		Name:         "UK",
-		CurrencyName: "GBP",
-		Taxes:        inputTaxes,
+	want := Location{
+		Name:     "UK",
+		Currency: Currency{"GBP", "United Kingdom", "£"},
+		Taxes:    inputTaxes,
 	}
 
-	got, err := NewRegion("UK", "GBP", inputTaxes)
+	got, err := NewLocation("UK", "GBP", inputTaxes)
 	if err != nil {
 		t.Errorf("Unexpected Error: %s", err.Error())
 	}
@@ -29,10 +29,10 @@ func TestNewRegionOK(t *testing.T) {
 	}
 }
 
-func TestNewRegionError(t *testing.T) {
+func TestNewLocationError(t *testing.T) {
 	want := "Issue Validating Currency: Currency Not Found: WAK"
 
-	_, err := NewRegion("Wakana", "WAK", []Tax{})
+	_, err := NewLocation("Wakana", "WAK", []Tax{})
 	if err == nil {
 		t.Errorf("Expected Error but got nil")
 	}
