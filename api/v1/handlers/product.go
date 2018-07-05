@@ -1,9 +1,8 @@
 package handlers
 
 import (
+	"encoding/json"
 	"net/http"
-
-	"github.com/gorilla/mux"
 )
 
 func newProduct(w http.ResponseWriter, r *http.Request) {
@@ -16,8 +15,12 @@ func allProducts(w http.ResponseWriter, r *http.Request) {
 
 func getProduct(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	vars := mux.Vars(r)
-	id := vars["id"]
+	// vars := mux.Vars(r)
+	// id := vars["id"]
+	errMessage := Error{"User not found"}
+	encoder := json.NewEncoder(w)
+	w.WriteHeader(http.StatusNotFound)
 
-	product := repo.P
+	encoder.Encode(errMessage)
+
 }

@@ -4,6 +4,10 @@ import (
 	"github.com/gorilla/mux"
 )
 
+type Error struct {
+	Message string `json:"message,omitempty"`
+}
+
 // Router is the mux Router for the Service
 func Router(buildTime, commit, release string) *mux.Router {
 	r := mux.NewRouter()

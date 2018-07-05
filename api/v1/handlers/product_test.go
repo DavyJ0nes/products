@@ -26,10 +26,10 @@ func TestNonExistantProduct(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	var m map[string]string
-	json.Unmarshal(body, &m)
-	if m["error"] != "User not found" {
-		t.Errorf("Expected the 'error' key of the response to be set to 'User not found'. Got '%s'", m["error"])
+	var errMsg Error
+	json.Unmarshal(body, &errMsg)
+	if errMsg.Message != "User not found" {
+		t.Errorf("Expected the 'error' key of the response to be set to 'User not found'. Got '%s'", errMsg.Message)
 	}
 }
 
