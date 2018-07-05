@@ -15,7 +15,7 @@ BUILD_TIME = $(shell date -u '+%Y-%m-%d_%I:%M:%S%p')
 
 BUILD_PREFIX = CGO_ENABLED=0 GOOS=linux
 BUILD_FLAGS = -a -tags netgo --installsuffix netgo
-LDFLAGS = -ldflags "-s -w -X ${GO_PROJECT_PATH}/version.Release=${RELEASE} -X ${GO_PROJECT_PATH}/version.Commit=${COMMIT} -X ${GO_PROJECT_PATH}/version.BuildTime=${BUILD_TIME}"
+LDFLAGS = -ldflags "-s -w -X ${GO_PROJECT_PATH}/api/version.Release=${RELEASE} -X ${GO_PROJECT_PATH}/api/version.Commit=${COMMIT} -X ${GO_PROJECT_PATH}/api/version.BuildTime=${BUILD_TIME}"
 DOCKER_GO_BUILD = docker run --rm -v "$(GOPATH)":/go -v "$(CURDIR)":/go/src/app -w /go/src/app golang:${GO_VERSION}
 GO_BUILD_STATIC = $(BUILD_PREFIX) go build $(BUILD_FLAGS) $(LDFLAGS)
 GO_BUILD_OSX = GOOS=darwin GOARCh=amd64 go build $(LDFLAGS)
