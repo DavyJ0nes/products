@@ -1,16 +1,28 @@
-# HEADING
+# Products API
 
 ## Description
 
-Some blurb about the program
+Example of how to create a simple API that could be used as part of a commerce system or POS.
 
 ## Usage
 
-Usage instructions with code examples
+How to build and run the API
 
 ```shell
-# Here is the code example
-go run something
+# Basic run while testing
+make run
+
+# Run test suite over all packages
+make test
+
+# Build Docker Image
+make build
+
+# Run Docker Image
+make run-docker
+
+# Deploy to Kubernetes Cluster
+make deploy
 ```
 
 ## TODO
@@ -19,4 +31,4 @@ go run something
 
 ## License
 
-MIT
+[Apache 2.0](./LICENSE)

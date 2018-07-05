@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:	
+  name: products-api
+  labels:
+    env: dev
+    app: products-api
+    tier: web
+    version: v1
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: products-api
+  template:
+    metadata:
+      labels:
+        app: products-api
+    spec:
+      containers:
+      - name: products-api
+        image: davyj0nes/products-api:v1
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: 10m
+            memory: 30Mi
+          requests:
+            cpu: 10m
+            memory: 15Mi
+
