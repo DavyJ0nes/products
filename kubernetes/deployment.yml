@@ -6,7 +6,7 @@ metadata:
     env: dev
     app: products-api
     tier: web
-    version: v1
+    version: 0.1.0
 spec:
   replicas: 3
   strategy:
@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: products-api
-        image: davyj0nes/products-api:v1
+        image: davyj0nes/products-api:0.1.0
         ports:
         - containerPort: 8080
         resources:
