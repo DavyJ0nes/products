@@ -47,7 +47,7 @@ run:
 .PHONY: run-docker
 run-docker: build
 	$(call blue, "# Running Docker Image Locally...")
-	@docker run -it --rm --name ${APP_NAME} -p ${LOCAL_PORT}:3000 ${USERNAME}/${APP_NAME}:${IMAGE_VERSION} 
+	@docker run -it --rm --name ${APP_NAME} -p ${LOCAL_PORT}:${APP_PORT} ${USERNAME}/${APP_NAME}:${RELEASE} 
 
 .PHONY: deploy
 deploy: build

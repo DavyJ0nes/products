@@ -4,6 +4,8 @@
 
 Example of how to create a simple API that could be used as part of a commerce system or POS.
 
+You can find information about the data models used [here](./api/models)
+
 ## Usage
 
 How to build and run the API
@@ -27,7 +29,11 @@ make deploy
 
 ## TODO
 
-- [ ] Update README
+- [ ] Implement Data store
+- [ ] Add authentication to API
+- [ ] Add instrumentation using Prometheus
+- [ ] Improve the heathz endpoint
+- [ ] Add readyz endpoint
 
 ## License
 
