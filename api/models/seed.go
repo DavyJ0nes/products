@@ -66,7 +66,7 @@ func getKnownLocations() []Location {
 			CountryName: "United Kingdom",
 			Symbol:      "£",
 		},
-		Taxes: []Tax{{"VAT", 0.2}},
+		Taxes: []Tax{{"VAT", 0.2, 0.0}},
 	}
 
 	pasadena := Location{
@@ -77,7 +77,8 @@ func getKnownLocations() []Location {
 			Symbol:      "$",
 		},
 		Taxes: []Tax{
-			{"Sales Tax", 0.095},
+			{"Sales Tax", 0.095, 0.0},
+			{"Federal Tax", 0.095, 0.0},
 		},
 	}
 
@@ -88,7 +89,7 @@ func getKnownLocations() []Location {
 			CountryName: "EU Zone",
 			Symbol:      "€",
 		},
-		Taxes: []Tax{{"VAT", 0.2}},
+		Taxes: []Tax{{"VAT", 0.2, 0.0}},
 	}
 
 	ger := Location{
@@ -98,7 +99,7 @@ func getKnownLocations() []Location {
 			CountryName: "EU Zone",
 			Symbol:      "€",
 		},
-		Taxes: []Tax{{"VAT", 0.19}},
+		Taxes: []Tax{{"VAT", 0.19, 0.0}},
 	}
 
 	return []Location{uk, pasadena, fra, ger}

@@ -29,6 +29,7 @@ type TransactionOutput struct {
 	FormattedDateTime string              `json:"formatted_date_time,omitempty"`
 	Subtotal          float64             `json:"subtotal,omitempty"`
 	Taxtotal          float64             `json:"taxtotal,omitempty"`
+	TaxBreakdown      []models.Tax        `json:"tax_breakdown,omitempty"`
 	Total             float64             `json:"total,omitempty"`
 }
 
@@ -102,11 +103,18 @@ func newTransaction(w http.ResponseWriter, r *http.Request) {
 
 	log.Infof("Finished Calculating Transaction: %v", *tran)
 	// Set up output
+	tranTaxes, err := tran.Location.GetTaxes()
+	if err != nil {
+		checkError(w, err)
+		return
+	}
+
 	tranOutput.OrderID = tran.ID
 	tranOutput.FormattedProducts = formatProductOutput(tran.Products)
 	tranOutput.FormattedDateTime = tran.Datetime.Format("02-01-2006 15:04:05")
 	tranOutput.Subtotal = tran.Subtotal
 	tranOutput.Taxtotal = tran.TaxTotal
+	tranOutput.TaxBreakdown = tranTaxes
 	tranOutput.Total = tran.Total
 
 	generateJSONResponse(w, http.StatusOK, tranOutput)

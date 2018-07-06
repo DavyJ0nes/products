@@ -27,7 +27,7 @@ This output can be used by a receipt printer
 
 ```json
 {
-    "order_id": "b63ad3fc-31a8-48e9-9ecb-53779890e8e3",
+    "order_id": "f488a533-11cd-4787-b0bb-a945b5cb382c",
     "formatted_products": [
         {
             "product_quantity": 1,
@@ -45,10 +45,16 @@ This output can be used by a receipt printer
             "price": 12.99
         }
     ],
-    "formatted_date_time": "06-07-2018 20:10:57",
+    "formatted_date_time": "06-07-2018 23:13:19",
     "subtotal": 19.43,
     "taxtotal": 3.89,
-    "currency_conversion": 0.885697,
+    "tax_breakdown": [
+        {
+            "Name": "VAT",
+            "Amount": 0.2,
+            "Total": 3.89
+        }
+    ],
     "total": 23.32
 }
 ```

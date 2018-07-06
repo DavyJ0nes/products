@@ -10,6 +10,7 @@ import (
 type Tax struct {
 	Name   string
 	Amount float64
+	Total  float64
 }
 
 // Currency describes a specific currency type

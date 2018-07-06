@@ -177,6 +177,13 @@ func TestAddProducts(t *testing.T) {
 func TestCalcTotals(t *testing.T) {
 	wantSubtotal := 11.98
 	wantTaxTotal := 2.40
+	wantTaxBreakdown := []Tax{
+		{
+			Name:   "VAT",
+			Amount: 0.2,
+			Total:  2.4,
+		},
+	}
 	wantTotal := 14.38
 
 	testProducts := []Product{
@@ -219,6 +226,11 @@ func TestCalcTotals(t *testing.T) {
 	testTransaction.CalcTaxTotal()
 	if testTransaction.TaxTotal != wantTaxTotal {
 		t.Errorf("got: %v, want: %v", testTransaction.TaxTotal, wantTaxTotal)
+	}
+
+	taxes := testTransaction.GetTaxBreakdown()
+	if !reflect.DeepEqual(taxes, wantTaxBreakdown) {
+		t.Errorf("got: %v, want: %v", taxes, wantTaxBreakdown)
 	}
 
 	testTransaction.CalcTransactionTotal()

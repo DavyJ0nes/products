@@ -96,12 +96,29 @@ func (t *Transaction) CalcSubtotal() error {
 func (t *Transaction) CalcTaxTotal() {
 	var runningTotal float64
 
-	for _, tax := range t.Location.Taxes {
+	for idx, tax := range t.Location.Taxes {
 		runningTotal += (t.Subtotal * tax.Amount)
+		// Updating the pointer to the Tax
+		// tax is a copy not pointer, which is why need to do this
+		t.Location.Taxes[idx].Total = formatAmount((t.Subtotal * tax.Amount))
 	}
 
 	t.TaxTotal = formatAmount(runningTotal)
 
+}
+
+// GetTaxBreakdown gives breakdown of each of the taxes in a transaction
+// requires CalcTaxTotal() to have been run before to ensure Tax Totals != 0.0
+func (t *Transaction) GetTaxBreakdown() []Tax {
+	for i, tax := range t.Location.Taxes {
+		// update tax total
+		// TODO (davy): Not 100% sure if this is a good idea
+		if tax.Total == 0.0 {
+			t.Location.Taxes[i].Total = formatAmount((t.Subtotal * tax.Amount))
+		}
+	}
+
+	return t.Location.Taxes
 }
 
 // CalcTransactionTotal creates the final total for the transaction
