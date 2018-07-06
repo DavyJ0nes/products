@@ -49,8 +49,15 @@ func NewTransaction(location string) (*Transaction, error) {
 	}, nil
 }
 
-// AddProduct is used to add a new Product to the transactions Line Items
-func (t *Transaction) AddProduct(product Product) {
+// AddProducts is used to add multiple products to a transaction
+func (t *Transaction) AddProducts(products []Product) {
+	for _, p := range products {
+		t.addProduct(p)
+	}
+}
+
+// addProduct is used to add a new Product to the transactions Line Items
+func (t *Transaction) addProduct(product Product) {
 	t.Products = append(t.Products, product)
 }
 
@@ -82,13 +89,15 @@ func (t *Transaction) CalcTaxTotal() {
 		runningTotal += (t.Subtotal * tax.Amount)
 	}
 
-	t.TaxTotal = runningTotal
+	t.TaxTotal = formatAmount(runningTotal)
+
 }
 
 // CalcTransactionTotal creates the final total for the transaction
 // This will be then need to be paid
 func (t *Transaction) CalcTransactionTotal() {
-	t.Total = t.Subtotal + t.TaxTotal
+	total := t.Subtotal + t.TaxTotal
+	t.Total = formatAmount(total)
 }
 
 // JSON returns a JSON representation of the transaction
@@ -128,6 +137,7 @@ func calcLocalPrice(basePrice, rate float64) float64 {
 	localPrice := basePrice * math.Round(rate*precision) / precision
 
 	// This is horrible but couldn't find a better way of getting output to 2 decimals.
+	// TODO (davy): Find better way of handling this (seperate package)
 	formattedPrice, _ := strconv.ParseFloat(fmt.Sprintf("%.2f", localPrice), 64)
 
 	return formattedPrice
@@ -163,4 +173,14 @@ func getLocalRate(baseCurrency, locationCurrency string) (float64, error) {
 	rateVal := m[queryKey].Val
 
 	return rateVal, nil
+}
+
+func formatAmount(rawAmount float64) float64 {
+	// Rounding to 2 decimal places. Is a bit of a hack for now
+	// TODO (davy): Find better way of handling this (seperate package)
+	precision := math.Pow(10, float64(2))
+	preFormattedAmount := math.Round(rawAmount*precision) / precision
+	formattedAmount, _ := strconv.ParseFloat(fmt.Sprintf("%.2f", preFormattedAmount), 64)
+
+	return formattedAmount
 }

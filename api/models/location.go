@@ -14,6 +14,7 @@ type Tax struct {
 
 // Currency describes a specific currency type
 // refer to https://godoc.org/golang.org/x/text/currency#Unit for definition of Units
+// The name should adhere to https://en.wikipedia.org/wiki/ISO_4217
 type Currency struct {
 	Name        string
 	CountryName string
@@ -132,6 +133,9 @@ func getKnownCurrencies() []Currency {
 // GetTaxes is a getter method to get the associated taxes in a Region
 func (l *Location) GetTaxes() ([]Tax, error) {
 	taxes := l.Taxes
+	if len(taxes) < 1 {
+		return taxes, errors.New("No Taxes associated with Location")
+	}
 	return taxes, nil
 }
 

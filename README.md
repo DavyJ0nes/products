@@ -1,5 +1,14 @@
 # Products API
 
+## Table of Contents
+
+- [Products API](#products-api)
+    - [Table of Contents](#table-of-contents)
+    - [Description](#description)
+    - [Usage](#usage)
+    - [TODO](#todo)
+    - [License](#license)
+
 ## Description
 
 Example of how to create a simple API that could be used as part of a commerce system or POS.
@@ -32,7 +41,7 @@ make deploy
 - [ ] Implement Data store
 - [ ] Add authentication to API
 - [ ] Add instrumentation using Prometheus
-- [ ] Improve the heathz endpoint
+- [ ] Improve the healthz endpoint
 - [ ] Add readyz endpoint
 
 ## License
