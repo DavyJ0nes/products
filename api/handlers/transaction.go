@@ -40,10 +40,29 @@ func newTransaction(w http.ResponseWriter, r *http.Request) {
 		err        error
 	)
 
+	if r.Body == nil {
+		errMsg := Error{"received no data"}
+		generateJSONResponse(w, http.StatusBadRequest, errMsg)
+		return
+	}
+
 	b, err := ioutil.ReadAll(r.Body)
-	checkError(w, err)
+	if err != nil {
+		checkError(w, err)
+		return
+	}
+
+	if len(b) == 0 {
+		errMsg := Error{"received no data"}
+		generateJSONResponse(w, http.StatusBadRequest, errMsg)
+		return
+	}
+
 	err = json.Unmarshal(b, &tranInput)
-	checkError(w, err)
+	if err != nil {
+		checkError(w, err)
+		return
+	}
 
 	tran, err := models.NewTransaction(tranInput.Location)
 	log.Infof("Created New Transaction: %s", tran.ID)
@@ -87,14 +106,6 @@ func newTransaction(w http.ResponseWriter, r *http.Request) {
 	tranOutput.Total = tran.Total
 
 	generateJSONResponse(w, http.StatusOK, tranOutput)
-}
-
-func allTransactions(w http.ResponseWriter, r *http.Request) {
-}
-
-func getTransaction(w http.ResponseWriter, r *http.Request) {
-	// vars := mux.Vars(r)
-	// vars["id"] // id of the transaction
 }
 
 // formatProductOutput translates product information into one that is better for the transaction output

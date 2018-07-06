@@ -34,7 +34,7 @@ func TestGetProduct(t *testing.T) {
 			url:          "/api/v1/product/unknown",
 			sku:          "unknown",
 			responseCode: http.StatusNotFound,
-			want:         "Error: No Product Matches SKU",
+			want:         "Error: No Product Matches SKU: unknown",
 		},
 	}
 	for _, tt := range testCases {

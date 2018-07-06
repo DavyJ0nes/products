@@ -47,14 +47,16 @@ func Router(buildTime, commit, release string) http.Handler {
 	r.HandleFunc("/healthz", healthz).Methods("GET")
 
 	// product endpoints
+	// TO BE IMPLEMENTED
 	// r.HandleFunc("/api/v1/product", newProduct).Methods("POST")
 	r.HandleFunc("/api/v1/product/all", allProducts).Methods("GET")
 	r.HandleFunc("/api/v1/product/{sku}", getProduct).Methods("GET")
 
 	// transaction endpoints
 	r.HandleFunc("/api/v1/transaction", newTransaction).Methods("POST")
-	r.HandleFunc("/api/v1/transaction/all", allTransactions).Methods("GET")
-	r.HandleFunc("/api/v1/transaction/{id}", getTransaction).Methods("GET")
+	// TO BE IMPLEMENTED
+	// r.HandleFunc("/api/v1/transaction/all", allTransactions).Methods("GET")
+	// r.HandleFunc("/api/v1/transaction/{id}", getTransaction).Methods("GET")
 
 	// prometheus metrics endpoint
 	r.Handle("/metrics", promhttp.Handler())

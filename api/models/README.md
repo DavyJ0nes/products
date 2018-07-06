@@ -24,6 +24,7 @@ Describes a Product within the system that has the following attributes:
 - **SKU**: Stock Keeping Unit. Used for lookup
 - **BasePrice**: Price of the product in the currency that it was created with
 - **BaseCurrency**: The currency that the price is in. Used for conversion
+- **LocalPrice**: Price of the product in the currency that the transaction takes place in. Initially this will be set to the same as BasePrice.
 
 ### Location
 

@@ -2,6 +2,7 @@
 USERNAME = davyj0nes
 APP_NAME = products-api
 
+DOCKER_ADDR ?= 192.168.99.100
 LOCAL_PORT ?= 8080
 APP_PORT ?= 8080
 
@@ -60,9 +61,14 @@ test:
 	$(call blue, "# Testing Golang Code...")
 	@docker run --rm -it -v "$(GOPATH):/go" -v "$(CURDIR)":/go/src/app -w /go/src/app golang:${GO_VERSION} sh -c 'go test -v -race ${GO_FILES}' 
 
+.PHONY: transaction-test
+transaction-test:
+	$(call blue, "# Creating a new Transaction...")
+	curl -XPOST -d '{"location": "United Kingdom","product_skus": ["CM01-W","Co01-B","GT01-G"]}' ${DOCKER_ADDR}:${LOCAL_PORT}/api/v1/transaction
+
 .PHONY: clean
 clean: 
-	@rm -f ${app_name} 
+	@rm -f ${APP_NAME} 
 
 #### FUNCTIONS ####
 define blue

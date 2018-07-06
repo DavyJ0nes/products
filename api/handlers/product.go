@@ -7,10 +7,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// func newProduct(w http.ResponseWriter, r *http.Request) {
-// 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-// }
-
 func allProducts(w http.ResponseWriter, r *http.Request) {
 	products := models.KnownProducts
 	generateJSONResponse(w, http.StatusOK, products)

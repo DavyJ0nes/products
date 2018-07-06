@@ -85,7 +85,6 @@ func TestFullTransaction(t *testing.T) {
 			// Calculate Final Total
 			testTran.CalcTransactionTotal()
 			fmt.Println("FinalTotal:", testTran.Total)
-			fmt.Println("ConversionRate:", testTran.ConversionRate)
 
 			if got := testTran.Total; got != tt.want {
 				t.Errorf("got: %v, want: %v", got, tt.want)
@@ -122,6 +121,19 @@ func TestNewTransactionError(t *testing.T) {
 
 	if err.Error() != want {
 		t.Errorf("got: %v, want: %v", err.Error(), want)
+	}
+}
+
+func TestStoreTransaction(t *testing.T) {
+	// set up test data
+	Seed()
+	testTran, err := NewTransaction("United Kingdom")
+	if err != nil {
+		t.Fatalf("Unexpected Error: %v", err)
+	}
+	err = StoreTransaction(testTran)
+	if err != nil {
+		t.Fatalf("Unexpected Error: %v", err)
 	}
 }
 
