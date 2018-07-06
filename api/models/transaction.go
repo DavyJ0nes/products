@@ -49,6 +49,15 @@ func NewTransaction(location string) (*Transaction, error) {
 	}, nil
 }
 
+// StoreTransaction adds a completed transaction to the data store
+// This will need to be refactored once data store has been added
+// TODO (davy): Refactor for datastore
+func StoreTransaction(tran *Transaction) error {
+	KnownTransactions = append(KnownTransactions, *tran)
+
+	return nil
+}
+
 // AddProducts is used to add multiple products to a transaction
 func (t *Transaction) AddProducts(products []Product) {
 	for _, p := range products {
@@ -67,12 +76,14 @@ func (t *Transaction) CalcSubtotal() error {
 	var runningTotal float64
 
 	for _, product := range t.Products {
-		conversionRate, err := getLocalRate(t.Location.Currency.Name, product.BaseCurrency)
+		conversionRate, err := getLocalRate(product.BaseCurrency, t.Location.Currency.Name)
 		if err != nil {
-			return errors.Wrap(err, "Probelm getting conversion rate")
+			return errors.Wrap(err, "Problem getting conversion rate")
 		}
 
 		localPrice := calcLocalPrice(product.BasePrice, conversionRate)
+		// Update local price. Used for transaction output
+		product.LocalPrice = localPrice
 		runningTotal += localPrice
 
 	}
@@ -144,8 +155,16 @@ func calcLocalPrice(basePrice, rate float64) float64 {
 
 }
 
+type convertorErrorRepsonse struct {
+	Status int
+	Error  string
+}
+
 // getLocalRate queries a free currency convertor to get an up to date rate for
 // the base currency and the locations currency
+// This API has a rate limit of 100 requests per hour
+// more info: https://free.currencyconverterapi.com/
+// TODO (davy): mock conversion service
 func getLocalRate(baseCurrency, locationCurrency string) (float64, error) {
 	baseURL := "http://free.currencyconverterapi.com/api/v5/convert"
 	queryKey := fmt.Sprintf("%s_%s", baseCurrency, locationCurrency)
@@ -160,6 +179,12 @@ func getLocalRate(baseCurrency, locationCurrency string) (float64, error) {
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return 0.0, err
+	}
+
+	if response.StatusCode != http.StatusOK {
+		var errMsg convertorErrorRepsonse
+		json.Unmarshal(body, &errMsg)
+		return 0.0, errors.Errorf("Non 200 Response: %d\n%s", errMsg.Status, errMsg.Error)
 	}
 
 	// Parse body as Map

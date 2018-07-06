@@ -36,6 +36,7 @@ func seedProducts() Products {
 				SKU:          "CM01-W",
 				BasePrice:    5.99,
 				BaseCurrency: "GBP",
+				LocalPrice:   5.99,
 			},
 			{
 				ID:           2992948790,
@@ -45,6 +46,7 @@ func seedProducts() Products {
 				SKU:          "Co01-B",
 				BasePrice:    2.50,
 				BaseCurrency: "USD",
+				LocalPrice:   2.50,
 			},
 			{
 				ID:           2992948790,
@@ -54,6 +56,7 @@ func seedProducts() Products {
 				SKU:          "GT01-G",
 				BasePrice:    12.99,
 				BaseCurrency: "EUR",
+				LocalPrice:   12.99,
 			},
 		},
 	}

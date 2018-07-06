@@ -22,7 +22,7 @@ func TestNewLocationOK(t *testing.T) {
 
 	got, err := NewLocation("UK", "GBP", inputTaxes)
 	if err != nil {
-		t.Errorf("Unexpected Error: %s", err.Error())
+		t.Fatalf("Unexpected Error: %s", err.Error())
 	}
 
 	if !reflect.DeepEqual(*got, want) {
@@ -35,7 +35,7 @@ func TestNewLocationError(t *testing.T) {
 
 	_, err := NewLocation("Wakana", "WAK", []Tax{})
 	if err == nil {
-		t.Errorf("Expected Error but got nil")
+		t.Fatalf("Expected Error but got nil")
 	}
 
 	if err.Error() != want {
@@ -57,7 +57,7 @@ func TestGetLocationOK(t *testing.T) {
 
 	got, err := GetLocation("United Kingdom")
 	if err != nil {
-		t.Errorf("Unexpected Error: %s", err.Error())
+		t.Fatalf("Unexpected Error: %s", err.Error())
 	}
 
 	if !reflect.DeepEqual(got, want) {
@@ -70,7 +70,7 @@ func TestGetLocationError(t *testing.T) {
 
 	_, err := GetLocation("Unknown")
 	if err == nil {
-		t.Errorf("Expecting method to error, got nil")
+		t.Fatalf("Expecting method to error, got nil")
 	}
 
 	if err.Error() != want {
@@ -91,12 +91,12 @@ func TestGetTaxesOK(t *testing.T) {
 
 	testLocation, err := NewLocation("UK", "GBP", want)
 	if err != nil {
-		t.Errorf("Unexpected Error: %s", err.Error())
+		t.Fatalf("Unexpected Error: %s", err.Error())
 	}
 
 	got, err := testLocation.GetTaxes()
 	if err != nil {
-		t.Errorf("Unexpected Error: %s", err.Error())
+		t.Fatalf("Unexpected Error: %s", err.Error())
 	}
 
 	if !reflect.DeepEqual(got, want) {
@@ -109,12 +109,12 @@ func TestGetTaxesEmpty(t *testing.T) {
 
 	testLocation, err := NewLocation("UK", "GBP", []Tax{})
 	if err != nil {
-		t.Errorf("Unexpected Error: %s", err.Error())
+		t.Fatalf("Unexpected Error: %s", err.Error())
 	}
 
 	_, err = testLocation.GetTaxes()
 	if err == nil {
-		t.Errorf("Expecting method to error, got nil")
+		t.Fatalf("Expecting method to error, got nil")
 	}
 
 	if err.Error() != want {
@@ -138,18 +138,18 @@ func TestLocationJSON(t *testing.T) {
 
 	testLocation, err := NewLocation("UK", "GBP", inputTaxes)
 	if err != nil {
-		t.Errorf("Unexpected Error: %s", err.Error())
+		t.Fatalf("Unexpected Error: %s", err.Error())
 	}
 
 	bytes, err := testLocation.JSON()
 	if err != nil {
-		t.Errorf("Unexpected Error: %s", err.Error())
+		t.Fatalf("Unexpected Error: %s", err.Error())
 	}
 
 	var got Location
 	err = json.Unmarshal(bytes, &got)
 	if err != nil {
-		t.Errorf("Unexpected Error: %s", err.Error())
+		t.Fatalf("Unexpected Error: %s", err.Error())
 	}
 
 	if !reflect.DeepEqual(got, want) {

@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/davyj0nes/products/api/models"
@@ -21,11 +20,9 @@ func getProduct(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	sku := vars["sku"]
 	product, err := models.GetProduct(sku)
+	// having to do this due to execution continuing after error
 	if err != nil {
-		errMessage := Error{
-			Message: fmt.Sprintf("Problem finding product: %v", err),
-		}
-		generateJSONResponse(w, http.StatusNotFound, errMessage)
+		checkError(w, err)
 		return
 	}
 

@@ -40,7 +40,6 @@ make deploy
 
 - [ ] Implement Data store
 - [ ] Add authentication to API
-- [ ] Add instrumentation using Prometheus
 - [ ] Improve the healthz endpoint
 - [ ] Add readyz endpoint
 

@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -68,6 +69,19 @@ func generateJSONResponse(w http.ResponseWriter, status int, data interface{}) {
 	w.WriteHeader(status)
 	encoder := json.NewEncoder(w)
 	encoder.Encode(data)
+}
+
+// checkError is a helper that returns an error message encoded with JSON
+// Using this pattern here as there are more steps than just wrapping the error and returning it
+// TODO (davy): handle other status codes other than 404
+func checkError(w http.ResponseWriter, err error) {
+	if err != nil {
+		errMessage := Error{
+			Message: fmt.Sprintf("Error: %v", err),
+		}
+		generateJSONResponse(w, http.StatusNotFound, errMessage)
+		return
+	}
 }
 
 // middleware runs a set of functions on every request.

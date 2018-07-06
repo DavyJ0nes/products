@@ -23,6 +23,7 @@ type Product struct {
 	SKU          string  `json:"sku,omitempty"`
 	BasePrice    float64 `json:"price,omitempty"`
 	BaseCurrency string  `json:"base_currency,omitempty"`
+	LocalPrice   float64 `json:"local_price,omitempty"`
 }
 
 // NewProduct is a factory for creating new products unsurprisingly
@@ -36,6 +37,7 @@ func NewProduct(name, desc, colour, sku, currency string, price float64) *Produc
 		SKU:          sku,
 		BasePrice:    price,
 		BaseCurrency: currency,
+		LocalPrice:   price,
 	}
 }
 
@@ -46,7 +48,7 @@ func GetProduct(sku string) (*Product, error) {
 			return &product, nil
 		}
 	}
-	return &Product{}, errors.New("No Product Matches SKU")
+	return &Product{}, errors.Errorf("No Product Matches SKU: %s", sku)
 }
 
 // GetProducts returns all known products

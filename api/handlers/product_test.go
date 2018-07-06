@@ -27,14 +27,14 @@ func TestGetProduct(t *testing.T) {
 			url:          "/api/v1/product/Co01-B",
 			sku:          "Co01-B",
 			responseCode: http.StatusOK,
-			want:         `{"id":2992948790,"name":"Coaster","desc":"Cork Coaster","colour":"Brown","sku":"Co01-B","price":2.5,"base_currency":"USD"}`,
+			want:         `{"id":2992948790,"name":"Coaster","desc":"Cork Coaster","colour":"Brown","sku":"Co01-B","price":2.5,"base_currency":"USD","local_price":2.5}`,
 		},
 		{
 			name:         "product doesn't exist",
 			url:          "/api/v1/product/unknown",
 			sku:          "unknown",
 			responseCode: http.StatusNotFound,
-			want:         "Problem finding product: No Product Matches SKU",
+			want:         "Error: No Product Matches SKU",
 		},
 	}
 	for _, tt := range testCases {
