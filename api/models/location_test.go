@@ -33,7 +33,7 @@ func TestNewLocationOK(t *testing.T) {
 func TestNewLocationError(t *testing.T) {
 	want := "Issue Validating Currency: Currency Not Found: WAK"
 
-	_, err := NewLocation("Wakana", "WAK", []Tax{})
+	_, err := NewLocation("Wakanda", "WAK", []Tax{})
 	if err == nil {
 		t.Fatalf("Expected Error but got nil")
 	}

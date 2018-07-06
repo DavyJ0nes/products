@@ -54,7 +54,8 @@ func GetProduct(sku string) (*Product, error) {
 // GetProducts returns all known products
 func GetProducts() []Product {
 	// Currently just getting all in memory seeded Products
-	// Will need up update this once database is set up
+	// TODO (davy): Will need up update this once database is set up
+	// KnownProducts is in seed.go
 	return KnownProducts.Products
 }
 
@@ -79,7 +80,7 @@ func (p *Product) JSON() ([]byte, error) {
 }
 
 // generateID creates a hash of the product information provided
-// will need to update this in future if relational database is used
+// TODO (davy): Will need to update this in future if relational database is used
 func generateProductID(name, desc, colour, sku string) uint32 {
 	concat := fmt.Sprintf("%s%s%s%s", name, desc, colour, sku)
 

@@ -122,7 +122,7 @@ func (t *Transaction) JSON() ([]byte, error) {
 }
 
 // generateTransactionID is used to create a UUID for a transaction
-// will require refactoring when database is implemented
+// TODO (davy): Will require refactoring when database is implemented
 func generateTransactionID() (string, error) {
 	id, err := uuid.NewV4()
 	if err != nil {
@@ -142,6 +142,7 @@ type rateVal struct {
 // This is a simple method of ensuring that the price given is correct.
 // This method is pretty horrible and in need of refactoring
 // For production use this should be its own package to handle edge cases
+// TODO (davy): Readdress this implementation
 func calcLocalPrice(basePrice, rate float64) float64 {
 	// Calculate the local price by multiplying a rounded conversion rate
 	precision := math.Pow(10, float64(2))
@@ -164,7 +165,7 @@ type convertorErrorRepsonse struct {
 // the base currency and the locations currency
 // This API has a rate limit of 100 requests per hour
 // more info: https://free.currencyconverterapi.com/
-// TODO (davy): mock conversion service
+// TODO (davy): Mock conversion service
 func getLocalRate(baseCurrency, locationCurrency string) (float64, error) {
 	baseURL := "http://free.currencyconverterapi.com/api/v5/convert"
 	queryKey := fmt.Sprintf("%s_%s", baseCurrency, locationCurrency)

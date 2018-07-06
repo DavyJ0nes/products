@@ -37,7 +37,7 @@ func init() {
 
 // Router is the mux Router for the Service
 func Router(buildTime, commit, release string) http.Handler {
-	// Setting up in memeory data
+	// Setting up in memory data
 	models.Seed()
 
 	r := mux.NewRouter()
@@ -47,14 +47,15 @@ func Router(buildTime, commit, release string) http.Handler {
 	r.HandleFunc("/healthz", healthz).Methods("GET")
 
 	// product endpoints
-	// TO BE IMPLEMENTED
+
+	// TODO (davy): TO BE IMPLEMENTED
 	// r.HandleFunc("/api/v1/product", newProduct).Methods("POST")
 	r.HandleFunc("/api/v1/product/all", allProducts).Methods("GET")
 	r.HandleFunc("/api/v1/product/{sku}", getProduct).Methods("GET")
 
 	// transaction endpoints
 	r.HandleFunc("/api/v1/transaction", newTransaction).Methods("POST")
-	// TO BE IMPLEMENTED
+	// TODO (davy): TO BE IMPLEMENTED
 	// r.HandleFunc("/api/v1/transaction/all", allTransactions).Methods("GET")
 	// r.HandleFunc("/api/v1/transaction/{id}", getTransaction).Methods("GET")
 

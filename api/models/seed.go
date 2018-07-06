@@ -1,11 +1,5 @@
 package models
 
-// APIElement describes the behaviour of an element of the API
-// Elements that implement this interface allow for easier pulling of their data
-type APIElement interface {
-	JSON() ([]byte, error)
-}
-
 var (
 	// KnownLocations is the in memory representation of the known Locations
 	KnownLocations []Location
@@ -63,6 +57,76 @@ func seedProducts() Products {
 
 }
 
+// TODO (davy): Once data store is added this will need to be abstracte
+func getKnownLocations() []Location {
+	uk := Location{
+		Name: "United Kingdom",
+		Currency: Currency{
+			Name:        "GBP",
+			CountryName: "United Kingdom",
+			Symbol:      "£",
+		},
+		Taxes: []Tax{{"VAT", 0.2}},
+	}
+
+	pasadena := Location{
+		Name: "Pasadena, CA, USA",
+		Currency: Currency{
+			Name:        "USD",
+			CountryName: "United States",
+			Symbol:      "$",
+		},
+		Taxes: []Tax{
+			{"Sales Tax", 0.095},
+		},
+	}
+
+	fra := Location{
+		Name: "France",
+		Currency: Currency{
+			Name:        "EUR",
+			CountryName: "EU Zone",
+			Symbol:      "€",
+		},
+		Taxes: []Tax{{"VAT", 0.2}},
+	}
+
+	ger := Location{
+		Name: "Germany",
+		Currency: Currency{
+			Name:        "EUR",
+			CountryName: "EU Zone",
+			Symbol:      "€",
+		},
+		Taxes: []Tax{{"VAT", 0.19}},
+	}
+
+	return []Location{uk, pasadena, fra, ger}
+}
+
+// getKnownCurrencies looks for already defined currencies
+// currently currencies are stored statically, this will need to be refactored once database has been added
+func getKnownCurrencies() []Currency {
+	return []Currency{
+		{
+			Name:        "GBP",
+			CountryName: "United Kingdom",
+			Symbol:      "£",
+		},
+		{
+			Name:        "USD",
+			CountryName: "United States",
+			Symbol:      "$",
+		},
+		{
+			Name:        "EUR",
+			CountryName: "Europe",
+			Symbol:      "€",
+		},
+	}
+}
+
+// TODO (davy): To be implemented
 func seedTransactions() Transactions {
 	return []Transaction{}
 }

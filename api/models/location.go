@@ -52,52 +52,6 @@ func GetLocation(name string) (*Location, error) {
 	return &Location{}, errors.Errorf("Location Not Found: %s", name)
 }
 
-func getKnownLocations() []Location {
-	uk := Location{
-		Name: "United Kingdom",
-		Currency: Currency{
-			Name:        "GBP",
-			CountryName: "United Kingdom",
-			Symbol:      "£",
-		},
-		Taxes: []Tax{{"VAT", 0.2}},
-	}
-
-	pasadena := Location{
-		Name: "Pasadena, CA, USA",
-		Currency: Currency{
-			Name:        "USD",
-			CountryName: "United States",
-			Symbol:      "$",
-		},
-		Taxes: []Tax{
-			{"Sales Tax", 0.095},
-		},
-	}
-
-	fra := Location{
-		Name: "France",
-		Currency: Currency{
-			Name:        "EUR",
-			CountryName: "EU Zone",
-			Symbol:      "€",
-		},
-		Taxes: []Tax{{"VAT", 0.2}},
-	}
-
-	ger := Location{
-		Name: "Germany",
-		Currency: Currency{
-			Name:        "EUR",
-			CountryName: "EU Zone",
-			Symbol:      "€",
-		},
-		Taxes: []Tax{{"VAT", 0.19}},
-	}
-
-	return []Location{uk, pasadena, fra, ger}
-}
-
 // getCurrency ensures that the currency name provided exists
 func getCurrency(name string) (Currency, error) {
 	for _, curr := range getKnownCurrencies() {
@@ -106,28 +60,6 @@ func getCurrency(name string) (Currency, error) {
 		}
 	}
 	return Currency{}, errors.Errorf("Currency Not Found: %s", name)
-}
-
-// getKnownCurrencies looks for already defined currencies
-// currently currencies are stored statically, this will need to be refactored once database has been added
-func getKnownCurrencies() []Currency {
-	return []Currency{
-		{
-			Name:        "GBP",
-			CountryName: "United Kingdom",
-			Symbol:      "£",
-		},
-		{
-			Name:        "USD",
-			CountryName: "United States",
-			Symbol:      "$",
-		},
-		{
-			Name:        "EUR",
-			CountryName: "Europe",
-			Symbol:      "€",
-		},
-	}
 }
 
 // GetTaxes is a getter method to get the associated taxes in a Region
