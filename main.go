@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/davyj0nes/products/api/v1/handlers"
+	"github.com/davyj0nes/products/api/handlers"
 	"github.com/davyj0nes/products/api/version"
 	log "github.com/sirupsen/logrus"
 )

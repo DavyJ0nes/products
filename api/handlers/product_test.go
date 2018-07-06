@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/davyj0nes/products/api/v1/models"
+	"github.com/davyj0nes/products/api/models"
 	"github.com/gorilla/mux"
 )
 

@@ -6,7 +6,7 @@ LOCAL_PORT ?= 8080
 APP_PORT ?= 8080
 
 GO_VERSION ?= 1.10.3
-GO_PROJECT_PATH ?= github.com/davyj0nes/products-api
+GO_PROJECT_PATH ?= github.com/davyj0nes/products
 GO_FILES = $(shell go list ./... | grep -v /vendor/)
 
 RELEASE = 0.0.1
