@@ -148,7 +148,7 @@ func calcLocalPrice(basePrice, rate float64) float64 {
 	localPrice := basePrice * math.Round(rate*precision) / precision
 
 	// This is horrible but couldn't find a better way of getting output to 2 decimals.
-	// TODO (davy): Find better way of handling this (seperate package)
+	// TODO (davy): Find better way of handling this (separate package)
 	formattedPrice, _ := strconv.ParseFloat(fmt.Sprintf("%.2f", localPrice), 64)
 
 	return formattedPrice
@@ -202,7 +202,7 @@ func getLocalRate(baseCurrency, locationCurrency string) (float64, error) {
 
 func formatAmount(rawAmount float64) float64 {
 	// Rounding to 2 decimal places. Is a bit of a hack for now
-	// TODO (davy): Find better way of handling this (seperate package)
+	// TODO (davy): Find better way of handling this (separate package)
 	precision := math.Pow(10, float64(2))
 	preFormattedAmount := math.Round(rawAmount*precision) / precision
 	formattedAmount, _ := strconv.ParseFloat(fmt.Sprintf("%.2f", preFormattedAmount), 64)

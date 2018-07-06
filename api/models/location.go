@@ -112,17 +112,17 @@ func getCurrency(name string) (Currency, error) {
 // currently currencies are stored statically, this will need to be refactored once database has been added
 func getKnownCurrencies() []Currency {
 	return []Currency{
-		Currency{
+		{
 			Name:        "GBP",
 			CountryName: "United Kingdom",
 			Symbol:      "£",
 		},
-		Currency{
+		{
 			Name:        "USD",
 			CountryName: "United States",
 			Symbol:      "$",
 		},
-		Currency{
+		{
 			Name:        "EUR",
 			CountryName: "Europe",
 			Symbol:      "€",

@@ -1,4 +1,5 @@
 # Products API
+[![Go Report Card](https://goreportcard.com/badge/github.com/DavyJ0nes/products)](https://goreportcard.com/report/github.com/DavyJ0nes/products)
 
 ## Table of Contents
 

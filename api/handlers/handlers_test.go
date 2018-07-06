@@ -26,7 +26,7 @@ func TestRouter(t *testing.T) {
 	}
 
 	// TESTING /non-existant
-	res, err = http.Get(ts.URL + "/non-existant")
+	res, err = http.Get(ts.URL + "/non-existent")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -65,6 +65,10 @@ func newTransaction(w http.ResponseWriter, r *http.Request) {
 	}
 
 	tran, err := models.NewTransaction(tranInput.Location)
+	if err != nil {
+		checkError(w, err)
+		return
+	}
 	log.Infof("Created New Transaction: %s", tran.ID)
 
 	var products []models.Product
