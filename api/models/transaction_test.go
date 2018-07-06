@@ -32,7 +32,7 @@ func TestFullTransaction(t *testing.T) {
 			"Three Products UK Test",
 			"United Kingdom",
 			allProducts,
-			23.32,
+			23.16,
 		},
 		{
 			"One Product France Test",

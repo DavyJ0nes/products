@@ -22,6 +22,7 @@ You can find information about the data models used [here](./api/models)
 2. Send a POST request to the container (this is done with curl): `make transaction-test`
 
 You should see output similar to the following:
+This output can be used by a receipt printer
 
 ```json
 {
@@ -53,7 +54,7 @@ You should see output similar to the following:
 
 ## Usage
 
-How to build and run the API
+How to build and run the API as a service. More information on these commands can be found in the [Makefile](./Makefile)
 
 ```shell
 # Basic run while testing
@@ -77,8 +78,12 @@ make test-transaction
 
 ## TODO
 
+- [ ] mock dependecy on currency convertor. Causes flaky tests due to changing conversion rates
+- [ ] Abstract transaction totals to seperate package and look at cleaner implementation
 - [ ] Implement Data store
 - [ ] Add authentication to API
+- [ ] Improve transactions to better handle multiple quantities of the same product
+- [ ] Tidy up test suites for improved readability
 - [ ] Improve the healthz endpoint
 - [ ] Add readyz endpoint
 

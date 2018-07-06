@@ -33,12 +33,14 @@ build: compile
 	$(call blue, "# Building Docker Image...")
 	@docker build --no-cache --label APP_VERSION=${RELEASE} --label BUILT_ON=${BUILD_TIME} --label GIT_HASH=${COMMIT} -t ${USERNAME}/${APP_NAME}:${RELEASE} .
 	@docker tag ${USERNAME}/${APP_NAME}:${RELEASE} ${USERNAME}/${APP_NAME}:latest
+	@docker tag ${USERNAME}/${APP_NAME}:${RELEASE} ${USERNAME}/${APP_NAME}:v1
 	@$(MAKE) clean
 
 .PHONY: publish
 publish: build
-        $(call blue, "# Publishing Docker Image...")
-        @docker push docker.io/${USERNAME}/${APP_NAME}:${RELEASE}
+	$(call blue, "# Publishing Docker Image...")
+	@docker push docker.io/${USERNAME}/${APP_NAME}:${RELEASE}
+	@docker push docker.io/${USERNAME}/${APP_NAME}:v1
 
 .PHONY: run
 run:

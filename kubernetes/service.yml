@@ -2,11 +2,15 @@ apiVersion: v1
 kind: Service
 metadata:
   name: products-api
-spec:
-  selector:
+  labels:
     app: products-api
     version: v1
+spec:
+  type: NodePort
   ports:
   - protocol: TCP
     port: 8000
     targetPort: 8080
+  selector:
+    app: products-api
+    version: v1
