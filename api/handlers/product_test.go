@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"bytes"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -109,6 +110,68 @@ func TestAllProducts(t *testing.T) {
 	json.Unmarshal(body, &productJSON)
 	if len(productJSON.Products) != 3 {
 		t.Errorf("got: %v, want: %v", len(productJSON.Products), 3)
+	}
+}
+
+func TestNewProduct(t *testing.T) {
+	// seeding in memory data
+	models.Seed()
+
+	testCases := []struct {
+		name         string
+		input        string
+		responseCode int
+		want         string
+	}{
+		{
+			name:         "empty input",
+			input:        ``,
+			responseCode: http.StatusBadRequest,
+			want:         "received no data",
+		},
+		{
+			name:         "new product",
+			input:        `{"name": "Wired Mouse","description": "Microsoft Wired Mouse","colour": "Black","sku":"Mo01-B","currency":"USD","price":24.95}`,
+			responseCode: http.StatusOK,
+			want:         `{"id":2050674932,"name":"Wired Mouse"}`,
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			w := httptest.NewRecorder()
+			req, err := http.NewRequest("POST", "/api/v1/product", bytes.NewBuffer([]byte(tt.input)))
+			if err != nil {
+				t.Errorf("Unexpected Error: %v", err.Error())
+			}
+
+			newProduct(w, req)
+			resp := w.Result()
+
+			checkResponseCode(t, tt.responseCode, resp.StatusCode)
+
+			body, err := ioutil.ReadAll(resp.Body)
+			resp.Body.Close()
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if tt.responseCode != http.StatusOK {
+				var errMsg Error
+				err = json.Unmarshal(body, &errMsg)
+				if err != nil {
+					t.Errorf("Unexpected Error: %v", err)
+				}
+
+				if errMsg.Message != tt.want {
+					t.Errorf("got: %v, want: %v", errMsg.Message, tt.want)
+				}
+			} else {
+				if string(body) != tt.want+"\n" {
+					t.Errorf("got:  %v, want: %v", string(body), tt.want)
+				}
+			}
+		})
 	}
 }
 

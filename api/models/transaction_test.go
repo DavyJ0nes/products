@@ -50,13 +50,13 @@ func TestFullTransaction(t *testing.T) {
 			"One Product Pasadena, CA, USA Test",
 			"Pasadena, CA, USA",
 			[]Product{*product1},
-			8.73,
+			9.48,
 		},
 		{
 			"Three Products Pasadena, CA, USA Test",
 			"Pasadena, CA, USA",
 			allProducts,
-			28.11,
+			30.70,
 		},
 	}
 
@@ -127,6 +127,8 @@ func TestNewTransactionError(t *testing.T) {
 func TestStoreTransaction(t *testing.T) {
 	// set up test data
 	Seed()
+	want := 1
+
 	testTran, err := NewTransaction("United Kingdom")
 	if err != nil {
 		t.Fatalf("Unexpected Error: %v", err)
@@ -134,6 +136,10 @@ func TestStoreTransaction(t *testing.T) {
 	err = StoreTransaction(testTran)
 	if err != nil {
 		t.Fatalf("Unexpected Error: %v", err)
+	}
+
+	if len(KnownTransactions) != want {
+		t.Errorf("got: %v, want: %v", len(KnownTransactions), want)
 	}
 }
 

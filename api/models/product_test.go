@@ -23,6 +23,23 @@ func TestNewProduct(t *testing.T) {
 	}
 }
 
+func TestStoreProduct(t *testing.T) {
+	// set up test data
+	Seed()
+	want := 4
+
+	testProd := NewProduct("Cup", "A Nice Green Cup", "Green", "C02-G", "GBP", 5.99)
+
+	err := StoreProduct(testProd)
+	if err != nil {
+		t.Fatalf("Unexpected Error: %v", err)
+	}
+
+	if len(KnownProducts.Products) != want {
+		t.Errorf("got: %v, want: %v", len(KnownProducts.Products), want)
+	}
+}
+
 func TestGenerateProductID(t *testing.T) {
 	var want uint32 = 2313392227
 	got := generateProductID("name", "Short Description", "colour", "sku")

@@ -41,6 +41,15 @@ func NewProduct(name, desc, colour, sku, currency string, price float64) *Produc
 	}
 }
 
+// StoreProduct adds a newly created product to the in memory datastore
+// This will need to be refactored once persistant data store has been added
+// TODO (davy): Refactor for datastore
+func StoreProduct(prod *Product) error {
+	KnownProducts.Products = append(KnownProducts.Products, *prod)
+
+	return nil
+}
+
 // GetProduct looks up an object by its SKU
 func GetProduct(sku string) (*Product, error) {
 	for _, product := range KnownProducts.Products {

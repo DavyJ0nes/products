@@ -66,6 +66,12 @@ transaction-test:
 	$(call blue, "# Creating a new Transaction...")
 	curl -XPOST -d '{"location": "United Kingdom","product_skus": ["CM01-W","Co01-B","GT01-G"]}' ${DOCKER_ADDR}:${LOCAL_PORT}/api/v1/transaction
 
+.PHONY: product-test
+product-test:
+	$(call blue, "# Creating a new Product and Getting it...")
+	curl -XPOST -d '{"name": "Wired Mouse","description": "Microsoft Wired Mouse","colour": "Black","sku":"Mo01-B","currency":"USD","price":24.95}' ${DOCKER_ADDR}:${LOCAL_PORT}/api/v1/product
+	curl -XGET ${DOCKER_ADDR}:${LOCAL_PORT}/api/v1/product/Mo01-B
+
 .PHONY: clean
 clean: 
 	@rm -f ${APP_NAME} 

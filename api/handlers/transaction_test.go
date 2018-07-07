@@ -33,10 +33,11 @@ func TestNewTransaction(t *testing.T) {
 			input:        `{"location": "United Kingdom","product_skus": ["CM01-W","Co01-B","GT01-G"]}`,
 			responseCode: http.StatusOK,
 			// only checking total price here.
-			// will need to update this in future.
+			// TODO (davy): Will need to update this in future.
 			want: "23.16",
 		},
 	}
+
 	for _, tt := range testCases {
 		t.Run(tt.name, func(t *testing.T) {
 			w := httptest.NewRecorder()

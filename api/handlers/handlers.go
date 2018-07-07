@@ -42,14 +42,13 @@ func Router(buildTime, commit, release string) http.Handler {
 
 	r := mux.NewRouter()
 
-	// basic endpoints
+	// admin endpoints
 	r.HandleFunc("/version", version(buildTime, commit, release)).Methods("GET")
 	r.HandleFunc("/healthz", healthz).Methods("GET")
+	r.Handle("/metrics", promhttp.Handler())
 
 	// product endpoints
-
-	// TODO (davy): TO BE IMPLEMENTED
-	// r.HandleFunc("/api/v1/product", newProduct).Methods("POST")
+	r.HandleFunc("/api/v1/product", newProduct).Methods("POST")
 	r.HandleFunc("/api/v1/product/all", allProducts).Methods("GET")
 	r.HandleFunc("/api/v1/product/{sku}", getProduct).Methods("GET")
 
@@ -58,9 +57,6 @@ func Router(buildTime, commit, release string) http.Handler {
 	// TODO (davy): TO BE IMPLEMENTED
 	// r.HandleFunc("/api/v1/transaction/all", allTransactions).Methods("GET")
 	// r.HandleFunc("/api/v1/transaction/{id}", getTransaction).Methods("GET")
-
-	// prometheus metrics endpoint
-	r.Handle("/metrics", promhttp.Handler())
 
 	withMetrics := middleware(r)
 	return withMetrics
