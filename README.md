@@ -80,7 +80,10 @@ make run-docker
 make deploy
 
 # Make POST request to test creating a new transaction
-make test-transaction
+make transaction-test
+
+# Make POST request to test creating a new product and then GETting it
+make product-test
 ```
 
 ## TODO

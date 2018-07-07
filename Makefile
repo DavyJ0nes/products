@@ -10,7 +10,7 @@ GO_VERSION ?= 1.10.3
 GO_PROJECT_PATH ?= github.com/davyj0nes/products
 GO_FILES = $(shell go list ./... | grep -v /vendor/)
 
-RELEASE = 0.1.0
+RELEASE = 0.2.0
 COMMIT = $(shell git rev-parse HEAD | cut -c 1-6)
 BUILD_TIME = $(shell date -u '+%Y-%m-%d_%I:%M:%S%p')
 
