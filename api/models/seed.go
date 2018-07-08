@@ -57,7 +57,7 @@ func seedProducts() Products {
 
 }
 
-// TODO (davy): Once data store is added this will need to be abstracte
+// TODO (davy): Once data store is added this will need to be abstracted
 func getKnownLocations() []Location {
 	uk := Location{
 		Name: "United Kingdom",

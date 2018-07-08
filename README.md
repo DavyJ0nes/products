@@ -88,14 +88,15 @@ make product-test
 
 ## TODO
 
-- [ ] mock dependecy on currency convertor. Causes flaky tests due to changing conversion rates
-- [ ] Abstract transaction totals to seperate package and look at cleaner implementation
+- [ ] mock dependency on currency converter. Causes flaky tests due to changing conversion rates
+- [ ] Abstract transaction totals to separate package and look at cleaner implementation
 - [ ] Implement Data store
 - [ ] Add authentication to API
 - [ ] Improve transactions to better handle multiple quantities of the same product
 - [ ] Tidy up test suites for improved readability
 - [ ] Improve the healthz endpoint
 - [ ] Add readyz endpoint
+- [ ] Look to move to using gRPC
 
 ## License
 

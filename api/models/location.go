@@ -30,7 +30,7 @@ type Location struct {
 	Taxes    []Tax
 }
 
-// NewLocation is a factory for creating new regions unsurprisingly
+// NewLocation is a factory for creating new locations unsurprisingly
 func NewLocation(name, currency string, taxes []Tax) (*Location, error) {
 	c, err := getCurrency(currency)
 	if err != nil {
@@ -63,7 +63,7 @@ func getCurrency(name string) (Currency, error) {
 	return Currency{}, errors.Errorf("Currency Not Found: %s", name)
 }
 
-// GetTaxes is a getter method to get the associated taxes in a Region
+// GetTaxes is a getter method to get the associated taxes in a location
 func (l *Location) GetTaxes() ([]Tax, error) {
 	taxes := l.Taxes
 	if len(taxes) < 1 {
@@ -72,7 +72,7 @@ func (l *Location) GetTaxes() ([]Tax, error) {
 	return taxes, nil
 }
 
-// JSON returns a JSON representation of the region
+// JSON returns a JSON representation of the location
 func (l *Location) JSON() ([]byte, error) {
 	b, err := json.Marshal(l)
 	if err != nil {

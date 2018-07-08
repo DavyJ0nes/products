@@ -105,7 +105,7 @@ func TestNewTransaction(t *testing.T) {
 	}
 
 	// Only testing that function returns the correct location as need to
-	// figure out how to test dates and uuid generation
+	// figure out how to test dates and UUID generation
 	if !reflect.DeepEqual(*got.Location, *want) {
 		t.Errorf("got: %v, want: %v", *got.Location, *want)
 	}
@@ -305,7 +305,7 @@ func TestTransactionJSON(t *testing.T) {
 
 	// Due to the location being a pointer
 	// When Unmarshalling it creates a copy and therefore the Location pointer of got is a different memory location
-	// So for ease am just testing the uuid
+	// So for ease am just testing the UUID
 	if got.ID != want.ID {
 		t.Errorf("got: %v, want: %v", got.ID, want.ID)
 	}
