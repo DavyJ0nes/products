@@ -1,0 +1,8 @@
+name: products-api
+home: https://github.com/davyj0nes/products
+version: 0.2.0
+appVersion: "0.2.0"
+description: API Server for a e-commerce service
+maintainers:
+  - name: DavyJ0nes
+    email: davy.jones@me.com
