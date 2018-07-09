@@ -53,8 +53,7 @@ run-docker: build
 .PHONY: deploy
 deploy: build
 	$(call blue, "# Deploying to Kubernetes...")
-	@kubectl create -f kubernetes/service.yml
-	@kubectl create -f kubernetes/deployment.yml
+	helm install kubernetes/charts/products-api
 
 .PHONY: test
 test:

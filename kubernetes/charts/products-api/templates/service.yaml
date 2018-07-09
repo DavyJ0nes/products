@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "products-api.fullname" . }}
+  namespace: {{ include "products-api.name" . }}
   labels:
     app: {{ include "products-api.name" . }}
     chart: {{ include "products-api.chart" . }}

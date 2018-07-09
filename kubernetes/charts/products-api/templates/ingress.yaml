@@ -5,6 +5,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
+  namespace: {{ include "products-api.name" . }}
   labels:
     app: {{ include "products-api.name" . }}
     chart: {{ include "products-api.chart" . }}
