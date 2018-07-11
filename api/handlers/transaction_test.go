@@ -16,6 +16,13 @@ func TestNewTransaction(t *testing.T) {
 	// seeding in memory data
 	models.Seed()
 
+	// start mock converstion rate API server
+	server := mockConversionServer()
+	defer server.Close()
+
+	// overwriting global config variable
+	conversionAPIURL = server.URL
+
 	testCases := []struct {
 		name         string
 		input        string
@@ -34,7 +41,7 @@ func TestNewTransaction(t *testing.T) {
 			responseCode: http.StatusOK,
 			// only checking total price here.
 			// TODO (davy): Will need to update this in future.
-			want: "23.16",
+			want: "34.03",
 		},
 	}
 
@@ -77,4 +84,14 @@ func TestNewTransaction(t *testing.T) {
 			}
 		})
 	}
+}
+
+func mockConversionServer() *httptest.Server {
+	f := func(w http.ResponseWriter, req *http.Request) {
+		w.WriteHeader(200)
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprintf(w, `{"GBP_USD":{"val":1.321406}}`)
+	}
+
+	return httptest.NewServer(http.HandlerFunc(f))
 }

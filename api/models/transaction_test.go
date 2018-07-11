@@ -3,6 +3,8 @@ package models
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
+	"net/http/httptest"
 	"reflect"
 	"testing"
 )
@@ -26,44 +28,48 @@ func TestFullTransaction(t *testing.T) {
 			"One Product UK Test",
 			"United Kingdom",
 			[]Product{*product1},
-			7.19,
+			9.49,
 		},
 		{
 			"Three Products UK Test",
 			"United Kingdom",
 			allProducts,
-			23.16,
+			34.03,
 		},
 		{
 			"One Product France Test",
 			"France",
 			[]Product{*product1},
-			8.12,
+			9.49,
 		},
 		{
 			"Three Products France Test",
 			"France",
 			allProducts,
-			26.26,
+			34.03,
 		},
 		{
 			"One Product Pasadena, CA, USA Test",
 			"Pasadena, CA, USA",
 			[]Product{*product1},
-			9.48,
+			9.41,
 		},
 		{
 			"Three Products Pasadena, CA, USA Test",
 			"Pasadena, CA, USA",
 			allProducts,
-			30.70,
+			33.75,
 		},
 	}
+
+	// set up mock server
+	mockServer := mockConversionServer()
+	defer mockServer.Close()
 
 	for _, tt := range testCases {
 		t.Run(tt.testName, func(t *testing.T) {
 			// Create New Transaction in Desired Location
-			testTran, err := NewTransaction(tt.location)
+			testTran, err := NewTransaction(tt.location, mockServer.URL)
 			if err != nil {
 				t.Fatalf("Unexpected Error: %v", err)
 			}
@@ -99,7 +105,7 @@ func TestNewTransaction(t *testing.T) {
 		t.Fatalf("Unexpected Error: %v", err)
 	}
 
-	got, err := NewTransaction("United Kingdom")
+	got, err := NewTransaction("United Kingdom", "")
 	if err != nil {
 		t.Fatalf("Unexpected Error: %v", err)
 	}
@@ -114,7 +120,7 @@ func TestNewTransaction(t *testing.T) {
 func TestNewTransactionError(t *testing.T) {
 	want := "Problem Getting Location Information: Location Not Found: Unknown"
 
-	_, err := NewTransaction("Unknown")
+	_, err := NewTransaction("Unknown", "")
 	if err == nil {
 		t.Fatalf("Expected Error, got: nil")
 	}
@@ -129,7 +135,7 @@ func TestStoreTransaction(t *testing.T) {
 	Seed()
 	want := 1
 
-	testTran, err := NewTransaction("United Kingdom")
+	testTran, err := NewTransaction("United Kingdom", "")
 	if err != nil {
 		t.Fatalf("Unexpected Error: %v", err)
 	}
@@ -167,7 +173,7 @@ func TestAddProducts(t *testing.T) {
 		},
 	}
 
-	testTransaction, err := NewTransaction("United Kingdom")
+	testTransaction, err := NewTransaction("United Kingdom", "")
 	if err != nil {
 		t.Fatalf("Unexpected Error: %v", err)
 	}
@@ -181,16 +187,16 @@ func TestAddProducts(t *testing.T) {
 
 // TODO (davy): mock conversion service
 func TestCalcTotals(t *testing.T) {
-	wantSubtotal := 11.98
-	wantTaxTotal := 2.40
+	wantSubtotal := 15.82
+	wantTaxTotal := 3.16
 	wantTaxBreakdown := []Tax{
 		{
 			Name:   "VAT",
 			Amount: 0.2,
-			Total:  2.4,
+			Total:  3.16,
 		},
 	}
-	wantTotal := 14.38
+	wantTotal := 18.98
 
 	testProducts := []Product{
 		{
@@ -213,7 +219,11 @@ func TestCalcTotals(t *testing.T) {
 		},
 	}
 
-	testTransaction, err := NewTransaction("United Kingdom")
+	// set up mock server
+	mockServer := mockConversionServer()
+	defer mockServer.Close()
+
+	testTransaction, err := NewTransaction("United Kingdom", mockServer.URL)
 	if err != nil {
 		t.Fatalf("Unexpected Error: %v", err)
 	}
@@ -267,11 +277,23 @@ func TestCalcLocalPrice(t *testing.T) {
 	}
 }
 
-// TODO (davy): mock conversion service
 func TestGetLocalRate(t *testing.T) {
-	_, err := getLocalRate("USD", "GBP")
+	want := 1.321406
+	// set up mock server
+	mockServer := mockConversionServer()
+	defer mockServer.Close()
+
+	tran, err := NewTransaction("United Kingdom", mockServer.URL)
+	if err != nil {
+		t.Fatalf("Unexpected Error: %v", err)
+	}
+	got, err := tran.getLocalRate("USD", "GBP")
 	if err != nil {
 		t.Fatalf("Unexpected Error: %v", err.Error())
+	}
+
+	if got != want {
+		t.Errorf("got: %v, want: %v", got, want)
 	}
 }
 
@@ -287,7 +309,7 @@ func TestGenerateTransactionID(t *testing.T) {
 }
 
 func TestTransactionJSON(t *testing.T) {
-	want, err := NewTransaction("United Kingdom")
+	want, err := NewTransaction("United Kingdom", "")
 	if err != nil {
 		t.Fatalf("Unexpected Error: %v", err)
 	}
@@ -309,4 +331,14 @@ func TestTransactionJSON(t *testing.T) {
 	if got.ID != want.ID {
 		t.Errorf("got: %v, want: %v", got.ID, want.ID)
 	}
+}
+
+func mockConversionServer() *httptest.Server {
+	f := func(w http.ResponseWriter, req *http.Request) {
+		w.WriteHeader(200)
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprintf(w, `{"GBP_USD":{"val":1.321406}}`)
+	}
+
+	return httptest.NewServer(http.HandlerFunc(f))
 }

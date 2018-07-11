@@ -88,7 +88,7 @@ make product-test
 
 ## TODO
 
-- [ ] mock dependency on currency converter. Causes flaky tests due to changing conversion rates
+- [x] mock dependency on currency converter. Causes flaky tests due to changing conversion rates
 - [ ] Abstract transaction totals to separate package and look at cleaner implementation
 - [ ] Implement Data store
 - [ ] Add authentication to API

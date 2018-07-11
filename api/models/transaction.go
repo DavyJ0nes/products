@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"math"
 	"net/http"
+	"regexp"
 	"strconv"
 	"time"
 
@@ -20,18 +21,19 @@ type Transactions []Transaction
 // Transaction is a representation of a payment transaction
 // This could be an invoice, bill etc
 type Transaction struct {
-	ID       string    `json:"id,omitempty"`
-	Datetime time.Time `json:"datetime,omitempty"`
-	Location *Location `json:"location,omitempty"`
-	Products []Product `json:"products,omitempty"`
-	Subtotal float64   `json:"subtotal,omitempty"`
-	TaxTotal float64   `json:"tax_total,omitempty"`
-	Total    float64   `json:"total,omitempty"`
+	ID            string    `json:"id,omitempty"`
+	Datetime      time.Time `json:"datetime,omitempty"`
+	Location      *Location `json:"location,omitempty"`
+	ConversionAPI string
+	Products      []Product `json:"products,omitempty"`
+	Subtotal      float64   `json:"subtotal,omitempty"`
+	TaxTotal      float64   `json:"tax_total,omitempty"`
+	Total         float64   `json:"total,omitempty"`
 }
 
 // NewTransaction starts a new Transaction
 // All Transactions must specify a region as this is used to get the current price of the products
-func NewTransaction(location string) (*Transaction, error) {
+func NewTransaction(location, conversionAPIURL string) (*Transaction, error) {
 	id, err := generateTransactionID()
 	if err != nil {
 		return &Transaction{}, errors.Wrap(err, "Problem generating UUID for Transaction")
@@ -43,9 +45,10 @@ func NewTransaction(location string) (*Transaction, error) {
 	}
 
 	return &Transaction{
-		ID:       id,
-		Datetime: time.Now(),
-		Location: l,
+		ID:            id,
+		Datetime:      time.Now(),
+		Location:      l,
+		ConversionAPI: conversionAPIURL,
 	}, nil
 }
 
@@ -76,7 +79,7 @@ func (t *Transaction) CalcSubtotal() error {
 	var runningTotal float64
 
 	for _, product := range t.Products {
-		conversionRate, err := getLocalRate(product.BaseCurrency, t.Location.Currency.Name)
+		conversionRate, err := t.getLocalRate(product.BaseCurrency, t.Location.Currency.Name)
 		if err != nil {
 			return errors.Wrap(err, "Problem getting conversion rate")
 		}
@@ -149,9 +152,11 @@ func generateTransactionID() (string, error) {
 	return id.String(), nil
 }
 
-// rateVal is used when parsing the output from the currency convertor
-type rateVal struct {
-	Val float64 `json:"val,omitempty"`
+// rateResponse is used when parsing the output from the currency convertor
+type rateResponse struct {
+	Type struct {
+		Val float64 `json:"val,omitempty"`
+	} `json:"type,omitempty"`
 }
 
 // calcLocalPrice queries a free currency convertor to get an up to date rate for
@@ -183,12 +188,11 @@ type convertorErrorRepsonse struct {
 // This API has a rate limit of 100 requests per hour
 // more info: https://free.currencyconverterapi.com/
 // TODO (davy): Mock conversion service
-func getLocalRate(baseCurrency, locationCurrency string) (float64, error) {
-	baseURL := "http://free.currencyconverterapi.com/api/v5/convert"
+func (t *Transaction) getLocalRate(baseCurrency, locationCurrency string) (float64, error) {
 	queryKey := fmt.Sprintf("%s_%s", baseCurrency, locationCurrency)
 
 	// Query is FROM currency TO Currency
-	URL := fmt.Sprintf("%s?q=%s&compact=y", baseURL, queryKey)
+	URL := fmt.Sprintf("%s?q=%s&compact=y", t.ConversionAPI, queryKey)
 	response, err := http.Get(URL)
 	if err != nil {
 		return 0.0, err
@@ -205,17 +209,18 @@ func getLocalRate(baseCurrency, locationCurrency string) (float64, error) {
 		return 0.0, errors.Errorf("Non 200 Response: %d\n%s", errMsg.Status, errMsg.Error)
 	}
 
-	// Parse body as Map
-	var m map[string]rateVal
-	err = json.Unmarshal(body, &m)
+	// due to not knowing what the key of the currency types am having to take care of it
+	// the response structure looks like: {"GBP_USD":{"val":1.321406}}
+	pattern := regexp.MustCompile("[A-Z]{3}_[A-Z]{3}")
+	parsedBody := pattern.ReplaceAllString(string(body), "type")
+
+	var data rateResponse
+	err = json.Unmarshal([]byte(parsedBody), &data)
 	if err != nil {
 		return 0.0, err
 	}
 
-	// Calculate the local price by multiplying a rounded conversion rate
-	rateVal := m[queryKey].Val
-
-	return rateVal, nil
+	return data.Type.Val, nil
 }
 
 func formatAmount(rawAmount float64) float64 {

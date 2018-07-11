@@ -33,6 +33,9 @@ type TransactionOutput struct {
 	Total             float64             `json:"total,omitempty"`
 }
 
+// putting this here so can overwrite when testing
+var conversionAPIURL = "http://free.currencyconverterapi.com/api/v5/convert"
+
 func newTransaction(w http.ResponseWriter, r *http.Request) {
 	log.Info("Received Request: ", "newTransaction")
 	var (
@@ -65,7 +68,7 @@ func newTransaction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tran, err := models.NewTransaction(tranInput.Location)
+	tran, err := models.NewTransaction(tranInput.Location, conversionAPIURL)
 	if err != nil {
 		checkError(w, err)
 		return
