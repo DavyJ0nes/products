@@ -4,10 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"math"
 	"net/http"
 	"regexp"
-	"strconv"
 	"time"
 
 	"github.com/satori/go.uuid"
@@ -26,9 +24,9 @@ type Transaction struct {
 	Location      *Location `json:"location,omitempty"`
 	ConversionAPI string
 	Products      []Product `json:"products,omitempty"`
-	Subtotal      float64   `json:"subtotal,omitempty"`
-	TaxTotal      float64   `json:"tax_total,omitempty"`
-	Total         float64   `json:"total,omitempty"`
+	Subtotal      int       `json:"subtotal,omitempty"`
+	TaxTotal      int       `json:"tax_total,omitempty"`
+	Total         int       `json:"total,omitempty"`
 }
 
 // NewTransaction starts a new Transaction
@@ -76,7 +74,7 @@ func (t *Transaction) addProduct(product Product) {
 // CalcSubtotal totals the prices of each of the Products in the transaction
 // in the locations Currency
 func (t *Transaction) CalcSubtotal() error {
-	var runningTotal float64
+	var runningTotal int
 
 	for _, product := range t.Products {
 		conversionRate, err := t.getLocalRate(product.BaseCurrency, t.Location.Currency.Name)
@@ -100,13 +98,13 @@ func (t *Transaction) CalcTaxTotal() {
 	var runningTotal float64
 
 	for idx, tax := range t.Location.Taxes {
-		runningTotal += (t.Subtotal * tax.Amount)
+		runningTotal += float64(t.Subtotal) * tax.Amount
 		// Updating the pointer to the Tax
 		// tax is a copy not pointer, which is why need to do this
-		t.Location.Taxes[idx].Total = formatAmount((t.Subtotal * tax.Amount))
+		t.Location.Taxes[idx].Total = int(float64(t.Subtotal) * tax.Amount)
 	}
 
-	t.TaxTotal = formatAmount(runningTotal)
+	t.TaxTotal = int(runningTotal)
 
 }
 
@@ -116,8 +114,8 @@ func (t *Transaction) GetTaxBreakdown() []Tax {
 	for i, tax := range t.Location.Taxes {
 		// update tax total
 		// TODO (davy): Not 100% sure if this is a good idea
-		if tax.Total == 0.0 {
-			t.Location.Taxes[i].Total = formatAmount((t.Subtotal * tax.Amount))
+		if tax.Total == 0 {
+			t.Location.Taxes[i].Total = int(float64(t.Subtotal) * tax.Amount)
 		}
 	}
 
@@ -127,8 +125,7 @@ func (t *Transaction) GetTaxBreakdown() []Tax {
 // CalcTransactionTotal creates the final total for the transaction
 // This will be then need to be paid
 func (t *Transaction) CalcTransactionTotal() {
-	total := t.Subtotal + t.TaxTotal
-	t.Total = formatAmount(total)
+	t.Total = t.Subtotal + t.TaxTotal
 }
 
 // JSON returns a JSON representation of the transaction
@@ -164,17 +161,10 @@ type rateResponse struct {
 // This is a simple method of ensuring that the price given is correct.
 // This method is pretty horrible and in need of refactoring
 // For production use this should be its own package to handle edge cases
-// TODO (davy): Readdress this implementation
-func calcLocalPrice(basePrice, rate float64) float64 {
-	// Calculate the local price by multiplying a rounded conversion rate
-	precision := math.Pow(10, float64(2))
-	localPrice := basePrice * math.Round(rate*precision) / precision
+func calcLocalPrice(basePrice int, rate float64) int {
+	localPrice := float64(basePrice) * rate
 
-	// This is horrible but couldn't find a better way of getting output to 2 decimals.
-	// TODO (davy): Find better way of handling this (separate package)
-	formattedPrice, _ := strconv.ParseFloat(fmt.Sprintf("%.2f", localPrice), 64)
-
-	return formattedPrice
+	return int(localPrice)
 
 }
 
@@ -187,7 +177,6 @@ type convertorErrorRepsonse struct {
 // the base currency and the locations currency
 // This API has a rate limit of 100 requests per hour
 // more info: https://free.currencyconverterapi.com/
-// TODO (davy): Mock conversion service
 func (t *Transaction) getLocalRate(baseCurrency, locationCurrency string) (float64, error) {
 	queryKey := fmt.Sprintf("%s_%s", baseCurrency, locationCurrency)
 
@@ -221,14 +210,4 @@ func (t *Transaction) getLocalRate(baseCurrency, locationCurrency string) (float
 	}
 
 	return data.Type.Val, nil
-}
-
-func formatAmount(rawAmount float64) float64 {
-	// Rounding to 2 decimal places. Is a bit of a hack for now
-	// TODO (davy): Find better way of handling this (separate package)
-	precision := math.Pow(10, float64(2))
-	preFormattedAmount := math.Round(rawAmount*precision) / precision
-	formattedAmount, _ := strconv.ParseFloat(fmt.Sprintf("%.2f", preFormattedAmount), 64)
-
-	return formattedAmount
 }

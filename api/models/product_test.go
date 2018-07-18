@@ -13,12 +13,12 @@ func TestNewProduct(t *testing.T) {
 		Desc:         "A Nice Cup",
 		Colour:       "White",
 		SKU:          "C01-W",
-		BasePrice:    5.99,
+		BasePrice:    599,
 		BaseCurrency: "GBP",
-		LocalPrice:   5.99,
+		LocalPrice:   599,
 	}
 
-	if got := NewProduct("Cup", "A Nice Cup", "White", "C01-W", "GBP", 5.99); *got != want {
+	if got := NewProduct("Cup", "A Nice Cup", "White", "C01-W", "GBP", 599); *got != want {
 		t.Errorf("got: %v, want: %v", got, want)
 	}
 }
@@ -28,7 +28,7 @@ func TestStoreProduct(t *testing.T) {
 	Seed()
 	want := 4
 
-	testProd := NewProduct("Cup", "A Nice Green Cup", "Green", "C02-G", "GBP", 5.99)
+	testProd := NewProduct("Cup", "A Nice Green Cup", "Green", "C02-G", "GBP", 599)
 
 	err := StoreProduct(testProd)
 	if err != nil {
@@ -59,9 +59,9 @@ func TestGetProductOK(t *testing.T) {
 		Desc:         "A Nice Mug",
 		Colour:       "White",
 		SKU:          "CM01-W",
-		BasePrice:    5.99,
+		BasePrice:    599,
 		BaseCurrency: "GBP",
-		LocalPrice:   5.99,
+		LocalPrice:   599,
 	}
 
 	got, err := GetProduct("CM01-W")
@@ -112,9 +112,9 @@ func TestProductJSON(t *testing.T) {
 		Desc:         "A Nice Mug",
 		Colour:       "White",
 		SKU:          "CM01-W",
-		BasePrice:    5.99,
+		BasePrice:    599,
 		BaseCurrency: "GBP",
-		LocalPrice:   5.99,
+		LocalPrice:   599,
 	}
 
 	testProduct, err := GetProduct("CM01-W")

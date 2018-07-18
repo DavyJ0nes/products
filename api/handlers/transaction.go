@@ -17,9 +17,9 @@ type NewTransactionInput struct {
 
 // TranProductOutput is used to generate JSON response for all products
 type TranProductOutput struct {
-	ProductQuantity int     `json:"product_quantity,omitempty"`
-	ProductName     string  `json:"product_name,omitempty"`
-	Price           float64 `json:"price,omitempty"`
+	ProductQuantity int    `json:"product_quantity,omitempty"`
+	ProductName     string `json:"product_name,omitempty"`
+	Price           int    `json:"price,omitempty"`
 }
 
 // TransactionOutput is used for the JSON response for a transaction
@@ -27,10 +27,10 @@ type TransactionOutput struct {
 	OrderID           string              `json:"order_id,omitempty"`
 	FormattedProducts []TranProductOutput `json:"formatted_products,omitempty"`
 	FormattedDateTime string              `json:"formatted_date_time,omitempty"`
-	Subtotal          float64             `json:"subtotal,omitempty"`
-	Taxtotal          float64             `json:"taxtotal,omitempty"`
+	Subtotal          int                 `json:"subtotal,omitempty"`
+	Taxtotal          int                 `json:"taxtotal,omitempty"`
 	TaxBreakdown      []models.Tax        `json:"tax_breakdown,omitempty"`
-	Total             float64             `json:"total,omitempty"`
+	Total             int                 `json:"total,omitempty"`
 }
 
 // putting this here so can overwrite when testing

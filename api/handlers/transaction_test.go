@@ -41,7 +41,7 @@ func TestNewTransaction(t *testing.T) {
 			responseCode: http.StatusOK,
 			// only checking total price here.
 			// TODO (davy): Will need to update this in future.
-			want: "34.03",
+			want: "3404",
 		},
 	}
 
@@ -77,7 +77,7 @@ func TestNewTransaction(t *testing.T) {
 			} else {
 				var tempTransaction models.Transaction
 				json.Unmarshal(body, &tempTransaction)
-				totalString := fmt.Sprintf("%.2f", tempTransaction.Total)
+				totalString := fmt.Sprintf("%d", tempTransaction.Total)
 				if totalString != tt.want {
 					t.Errorf("\ngot:  %v\nwant: %v", totalString, tt.want)
 				}

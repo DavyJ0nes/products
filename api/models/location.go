@@ -9,8 +9,8 @@ import (
 // Tax describes a specific type of tax
 type Tax struct {
 	Name   string
-	Amount float64
-	Total  float64
+	Amount float64 // not happy with this, should be int
+	Total  int
 }
 
 // Currency describes a specific currency type

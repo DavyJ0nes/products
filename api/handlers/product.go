@@ -12,12 +12,12 @@ import (
 
 // NewProductInput is used to parse the JSON input to newProduct
 type NewProductInput struct {
-	Name        string  `json:"name,omitempty"`
-	Description string  `json:"description,omitempty"`
-	Colour      string  `json:"colour,omitempty"`
-	SKU         string  `json:"sku,omitempty"`
-	Currency    string  `json:"currency,omitempty"`
-	Price       float64 `json:"price,omitempty"`
+	Name        string `json:"name,omitempty"`
+	Description string `json:"description,omitempty"`
+	Colour      string `json:"colour,omitempty"`
+	SKU         string `json:"sku,omitempty"`
+	Currency    string `json:"currency,omitempty"`
+	Price       int    `json:"price,omitempty"`
 }
 
 // NewProductOutput is used as the JSON output for newProduct

@@ -28,7 +28,7 @@ func TestGetProduct(t *testing.T) {
 			url:          "/api/v1/product/Co01-B",
 			sku:          "Co01-B",
 			responseCode: http.StatusOK,
-			want:         `{"id":2992948790,"name":"Coaster","desc":"Cork Coaster","colour":"Brown","sku":"Co01-B","price":2.5,"base_currency":"USD","local_price":2.5}`,
+			want:         `{"id":2992948790,"name":"Coaster","desc":"Cork Coaster","colour":"Brown","sku":"Co01-B","price":250,"base_currency":"USD","local_price":250}`,
 		},
 		{
 			name:         "product doesn't exist",
@@ -131,7 +131,7 @@ func TestNewProduct(t *testing.T) {
 		},
 		{
 			name:         "new product",
-			input:        `{"name": "Wired Mouse","description": "Microsoft Wired Mouse","colour": "Black","sku":"Mo01-B","currency":"USD","price":24.95}`,
+			input:        `{"name": "Wired Mouse","description": "Microsoft Wired Mouse","colour": "Black","sku":"Mo01-B","currency":"USD","price":2495}`,
 			responseCode: http.StatusOK,
 			want:         `{"id":2050674932,"name":"Wired Mouse"}`,
 		},

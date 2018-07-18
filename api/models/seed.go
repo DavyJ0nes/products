@@ -28,9 +28,9 @@ func seedProducts() Products {
 				Desc:         "A Nice Mug",
 				Colour:       "White",
 				SKU:          "CM01-W",
-				BasePrice:    5.99,
+				BasePrice:    599,
 				BaseCurrency: "GBP",
-				LocalPrice:   5.99,
+				LocalPrice:   599,
 			},
 			{
 				ID:           2992948790,
@@ -38,9 +38,9 @@ func seedProducts() Products {
 				Desc:         "Cork Coaster",
 				Colour:       "Brown",
 				SKU:          "Co01-B",
-				BasePrice:    2.50,
+				BasePrice:    250,
 				BaseCurrency: "USD",
-				LocalPrice:   2.50,
+				LocalPrice:   250,
 			},
 			{
 				ID:           2992948790,
@@ -48,9 +48,9 @@ func seedProducts() Products {
 				Desc:         "Whiskey Glass",
 				Colour:       "Glass",
 				SKU:          "GT01-G",
-				BasePrice:    12.99,
+				BasePrice:    1299,
 				BaseCurrency: "EUR",
-				LocalPrice:   12.99,
+				LocalPrice:   1299,
 			},
 		},
 	}
@@ -66,7 +66,7 @@ func getKnownLocations() []Location {
 			CountryName: "United Kingdom",
 			Symbol:      "£",
 		},
-		Taxes: []Tax{{"VAT", 0.2, 0.0}},
+		Taxes: []Tax{{"VAT", 0.2, 0}},
 	}
 
 	pasadena := Location{
@@ -77,8 +77,8 @@ func getKnownLocations() []Location {
 			Symbol:      "$",
 		},
 		Taxes: []Tax{
-			{"Sales Tax", 0.095, 0.0},
-			{"Federal Tax", 0.095, 0.0},
+			{"Sales Tax", 0.095, 0},
+			{"Federal Tax", 0.095, 0},
 		},
 	}
 
@@ -89,7 +89,7 @@ func getKnownLocations() []Location {
 			CountryName: "EU Zone",
 			Symbol:      "€",
 		},
-		Taxes: []Tax{{"VAT", 0.2, 0.0}},
+		Taxes: []Tax{{"VAT", 0.2, 0}},
 	}
 
 	ger := Location{
@@ -99,7 +99,7 @@ func getKnownLocations() []Location {
 			CountryName: "EU Zone",
 			Symbol:      "€",
 		},
-		Taxes: []Tax{{"VAT", 0.19, 0.0}},
+		Taxes: []Tax{{"VAT", 0.19, 0}},
 	}
 
 	return []Location{uk, pasadena, fra, ger}

@@ -16,18 +16,18 @@ type Products struct {
 
 // Product is an item within a store.
 type Product struct {
-	ID           uint32  `json:"id,omitempty"`
-	Name         string  `json:"name,omitempty"`
-	Desc         string  `json:"desc,omitempty"`
-	Colour       string  `json:"colour,omitempty"`
-	SKU          string  `json:"sku,omitempty"`
-	BasePrice    float64 `json:"price,omitempty"`
-	BaseCurrency string  `json:"base_currency,omitempty"`
-	LocalPrice   float64 `json:"local_price,omitempty"`
+	ID           uint32 `json:"id,omitempty"`
+	Name         string `json:"name,omitempty"`
+	Desc         string `json:"desc,omitempty"`
+	Colour       string `json:"colour,omitempty"`
+	SKU          string `json:"sku,omitempty"`
+	BasePrice    int    `json:"price,omitempty"`
+	BaseCurrency string `json:"base_currency,omitempty"`
+	LocalPrice   int    `json:"local_price,omitempty"`
 }
 
 // NewProduct is a factory for creating new products unsurprisingly
-func NewProduct(name, desc, colour, sku, currency string, price float64) *Product {
+func NewProduct(name, desc, colour, sku, currency string, price int) *Product {
 	id := generateProductID(name, desc, colour, sku)
 	return &Product{
 		ID:           id,
