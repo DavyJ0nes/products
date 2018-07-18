@@ -22,9 +22,9 @@ Describes a Product within the system that has the following attributes:
 - **Description**: Short Description
 - **Colour**: Colour of the Product if applicable
 - **SKU**: Stock Keeping Unit. Used for lookup
-- **BasePrice**: Price of the product in the currency that it was created with
+- **BasePrice**: Price of the product in the lowest denomination of that currency (p in £, c in $) that it was created with
 - **BaseCurrency**: The currency that the price is in. Used for conversion
-- **LocalPrice**: Price of the product in the currency that the transaction takes place in. Initially this will be set to the same as BasePrice.
+- **LocalPrice**: Price of the product in the lowest denomination of that currency (p in £, c in $) that the transaction takes place in. Initially this will be set to the same as BasePrice.
 
 ### Location
 

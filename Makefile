@@ -68,7 +68,7 @@ transaction-test:
 .PHONY: product-test
 product-test:
 	$(call blue, "# Creating a new Product and Getting it...")
-	curl -XPOST -d '{"name": "Wired Mouse","description": "Microsoft Wired Mouse","colour": "Black","sku":"Mo01-B","currency":"USD","price":24.95}' ${DOCKER_ADDR}:${LOCAL_PORT}/api/v1/product
+	curl -XPOST -d '{"name": "Wired Mouse","description": "Microsoft Wired Mouse","colour": "Black","sku":"Mo01-B","currency":"USD","price":2495}' ${DOCKER_ADDR}:${LOCAL_PORT}/api/v1/product
 	curl -XGET ${DOCKER_ADDR}:${LOCAL_PORT}/api/v1/product/Mo01-B
 
 .PHONY: clean

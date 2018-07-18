@@ -32,30 +32,30 @@ This output can be used by a receipt printer
         {
             "product_quantity": 1,
             "product_name": "Coffee Mug",
-            "price": 5.99
+            "price": 599
         },
         {
             "product_quantity": 1,
             "product_name": "Coaster",
-            "price": 2.5
+            "price": 250
         },
         {
             "product_quantity": 1,
             "product_name": "Glass Tumbler",
-            "price": 12.99
+            "price": 1299
         }
     ],
     "formatted_date_time": "06-07-2018 23:13:19",
-    "subtotal": 19.43,
-    "taxtotal": 3.89,
+    "subtotal": 1943,
+    "taxtotal": 389,
     "tax_breakdown": [
         {
             "Name": "VAT",
             "Amount": 0.2,
-            "Total": 3.89
+            "Total": 389
         }
     ],
-    "total": 23.32
+    "total": 2332
 }
 ```
 
